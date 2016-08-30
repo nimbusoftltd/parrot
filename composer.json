@@ -1,0 +1,36 @@
+{
+    "name": "nimbusoft/parrot",
+    "description": "Extendable backup system",
+    "keywords": [
+        "filesystem", "filesystems", "files", "chrisnharvey",
+        "backup", "flysystem", "mysql", "backups"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nimbusoft Ltd",
+            "email": "support@nimbusoft.co.uk"
+        },
+        {
+            "name": "Chris Harvey",
+            "email": "chris@nimbusoft.co.uk"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Nimbusoft\\Parrot\\": "src/"
+        }
+    },
+    "bin": [
+        "parrot"
+    ],
+    "require": {
+        "symfony/console": "^3.1",
+        "league/flysystem": "^1.0",
+        "symfony/yaml": "^3.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.5",
+        "mockery/mockery": "^0.9.5"
+    }
+}
