@@ -6,6 +6,7 @@ use Symfony\Component\Yaml\Yaml;
 use League\Event\Emitter;
 use League\Event\EmitterInterface;
 use Nimbusoft\Parrot\Console;
+use Nimbusoft\Parrot\Event\RunEvent;
 use Nimbusoft\Parrot\Plugin\FilesPlugin;
 use Nimbusoft\Parrot\Plugin\MysqlPlugin;
 use Nimbusoft\Parrot\Plugin\PgsqlPlugin;
@@ -57,6 +58,13 @@ class Parrot
         $this->registerPlugin(new FilesPlugin);
         $this->registerPlugin(new MysqlPlugin);
         $this->registerPlugin(new PgsqlPlugin);
+    }
+
+    public function run($file)
+    {
+        $config = Yaml::parse(file_get_contents($file));
+
+        $this->emitter->emit(new RunEvent($this, $config));
     }
 
     public function addCommand(Command $command)

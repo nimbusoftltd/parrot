@@ -15,6 +15,6 @@ class RunCommand extends AbstractCommand
 
     public function handle()
     {
-        
+        $this->parrot->run();
     }
 }
