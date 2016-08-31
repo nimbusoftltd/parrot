@@ -23,9 +23,13 @@ class Parrot
     const P_NORMAL = 0;
     const P_EARlY = -1000;
 
+    protected $tempPath;
+
     public function __construct(EmitterInterface $emitter)
     {
         $this->emitter = $emitter;
+
+        $this->setTempPath(sys_get_temp_dir());
 
         $this->registerDefaultPlugins();
     }
@@ -38,6 +42,16 @@ class Parrot
         $console->findPlugins();
         $console->setDefaultCommand('run');
         $console->run();
+    }
+
+    public function setTempPath(string $path)
+    {
+        $this->tempPath = rtrim($path, '/').'/'.uniqid('parrot');
+    }
+
+    public function getTempPath()
+    {
+        return $this->tempPath;
     }
 
     public function setConsole(Console $console)
@@ -63,6 +77,8 @@ class Parrot
     public function run($file)
     {
         $config = Yaml::parse(file_get_contents($file));
+
+        mkdir($this->getTempPath());
 
         $this->emitter->emit(new RunEvent($this, $config));
     }
