@@ -2,7 +2,7 @@
 
 namespace Nimbusoft\Parrot\Plugin;
 
-use RuntimeException;
+use League\Event\EventInterface;
 use Nimbusoft\Parrot\Extension\AbstractPlugin;
 
 class EncryptionPlugin extends AbstractPlugin
@@ -12,7 +12,7 @@ class EncryptionPlugin extends AbstractPlugin
         $this->parrot->listen('run', [$this, 'run'], -2000);
     }
 
-    public function run(array $config)
+    public function run(EventInterface $event)
     {
         if ( ! isset($config['encryption'])) return;
     }

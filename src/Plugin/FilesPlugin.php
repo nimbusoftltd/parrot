@@ -2,8 +2,8 @@
 
 namespace Nimbusoft\Parrot\Plugin;
 
-use RuntimeException;
 use Nimbusoft\Parrot\Parrot;
+use League\Event\EventInterface;
 use Nimbusoft\Parrot\Extension\AbstractPlugin;
 
 class FilesPlugin extends AbstractPlugin
@@ -13,7 +13,7 @@ class FilesPlugin extends AbstractPlugin
         $this->parrot->listen('run', [$this, 'run'], Parrot::P_NORMAL);
     }
 
-    public function run(array $config)
+    public function run(EventInterface $event)
     {
         if ( ! isset($config['files'])) return;
     }
