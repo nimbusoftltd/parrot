@@ -17,4 +17,14 @@ class RunEvent extends AbstractEvent
     {
         return 'run';
     }
+
+    public function getConfig(): array
+    {
+        return $this->config;
+    }
+
+    public function setConfig(array $config)
+    {
+        $this->config = $config;
+    }
 }
