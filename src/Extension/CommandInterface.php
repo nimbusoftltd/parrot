@@ -6,5 +6,7 @@ use Nimbusoft\Parrot\Parrot;
 
 interface CommandInterface
 {
+    public function setParrot(Parrot $parrot);
+
     public function handle();
 }

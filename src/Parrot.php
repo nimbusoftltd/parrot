@@ -2,6 +2,7 @@
 
 namespace Nimbusoft\Parrot;
 
+use Symfony\Component\Yaml\Yaml;
 use League\Event\Emitter;
 use League\Event\EmitterInterface;
 use Nimbusoft\Parrot\Console;
@@ -11,6 +12,8 @@ use Nimbusoft\Parrot\Plugin\PgsqlPlugin;
 use Nimbusoft\Parrot\Plugin\EncryptionPlugin;
 use Nimbusoft\Parrot\Plugin\DestinationPlugin;
 use Nimbusoft\Parrot\Extension\PluginInterface;
+use Nimbusoft\Parrot\Extension\CommandInterface;
+use Symfony\Component\Console\Command\Command;
 
 class Parrot
 {
@@ -36,6 +39,11 @@ class Parrot
         $console->run();
     }
 
+    public function setConsole(Console $console)
+    {
+        $this->console = $console;
+    }
+
     public function registerPlugin(PluginInterface $plugin)
     {
         $plugin->setParrot($this);
@@ -51,7 +59,12 @@ class Parrot
         $this->registerPlugin(new PgsqlPlugin);
     }
 
-    //public function addCommand()
+    public function addCommand(Command $command)
+    {
+        if ($command instanceof CommandInterface) $command->setParrot($this);
+
+        return $this->console->add($command);
+    }
 
     public function listen(string $event, callable $listener, int $priority)
     {

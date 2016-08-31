@@ -11,6 +11,8 @@ class Console extends BaseApplication
 {
     public function __construct(Parrot $parrot)
     {
+        $parrot->setConsole($this);
+
         $this->parrot = $parrot;
 
         parent::__construct('Parrot', Parrot::VERSION);
@@ -31,10 +33,10 @@ class Console extends BaseApplication
         ];
     }
 
-    protected function getDefaultCommands(): array
+    protected function getDefaultCommands()
     {
-        return array_merge(parent::getDefaultCommands(), [
-            new Command\RunCommand
-        ]);
+        $this->parrot->addCommand(new Command\RunCommand);
+
+        return parent::getDefaultCommands();
     }
 }
