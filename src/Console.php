@@ -29,6 +29,7 @@ class Console extends BaseApplication
     protected function getDefaultOptions(): array
     {
         return [
+            new InputOption('--config-file', '-c', InputOption::VALUE_OPTIONAL, 'The location of the Parrot config file.', './parrot.yml'),
             new InputOption('--plugin-dir', '-p', InputOption::VALUE_OPTIONAL, 'The directory containing Parrot plugins.', '/usr/lib/parrot/plugins')
         ];
     }
