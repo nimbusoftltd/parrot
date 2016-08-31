@@ -15,6 +15,9 @@ class FilesPlugin extends AbstractPlugin
 
     public function run(EventInterface $event)
     {
+        $config = $event->getConfig();
+
         if ( ! isset($config['files'])) return;
+        if (isset($config['files']['adapter'])) $config['files'] = [$config['files']];
     }
 }
