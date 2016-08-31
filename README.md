@@ -8,7 +8,7 @@
 
 Parrot is an extensable backup system written in PHP. It is designed to make it easy
 to create backups of files, databases and more and upload these to one or many different
-filesystem adapters using (Flysystem)[https://github.com/thephpleague/flysystem].
+filesystem adapters using [Flysystem](https://github.com/thephpleague/flysystem).
 
 ## Configuration
 
