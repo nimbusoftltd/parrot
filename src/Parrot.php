@@ -15,6 +15,8 @@ use Nimbusoft\Parrot\Plugin\Destination\DestinationPlugin;
 use Nimbusoft\Parrot\Extension\PluginInterface;
 use Nimbusoft\Parrot\Extension\CommandInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 class Parrot
 {
@@ -24,6 +26,7 @@ class Parrot
     const P_EARlY = -1000;
 
     protected $tempPath;
+    protected $plugins = [];
 
     public function __construct(EmitterInterface $emitter)
     {
@@ -68,6 +71,8 @@ class Parrot
     {
         $plugin->setParrot($this);
         $plugin->register();
+
+        $this->plugins[] = $plugin;
     }
 
     protected function registerDefaultPlugins()
@@ -84,7 +89,19 @@ class Parrot
             throw new FileNotFoundException($file);
         }
 
-        $config = Yaml::parse(file_get_contents($file));
+        $rawConfig = [
+            'root' => Yaml::parse(file_get_contents($file))
+        ];
+
+        $processor = new Processor;
+        $treeBuilder = new TreeBuilder;
+        $rootNode = $treeBuilder->root('root');
+
+        foreach ($this->plugins as $plugin) {
+            $plugin->configure($rootNode);
+        }
+
+        $configuration = $processor->process($treeBuilder->buildTree(), $rawConfig);
 
         mkdir($this->getTempPath());
 
