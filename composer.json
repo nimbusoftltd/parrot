@@ -26,6 +26,7 @@
     ],
     "require": {
         "symfony/console": "^3.1",
+        "symfony/config": "^3.1",
         "symfony/yaml": "^3.1",
         "league/flysystem": "^1.0",
         "defuse/php-encryption": "^2.0",
