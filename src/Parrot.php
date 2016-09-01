@@ -13,7 +13,7 @@ use Nimbusoft\Parrot\Plugin\Database\DatabasePlugin;
 use Nimbusoft\Parrot\Plugin\Encryption\EncryptionPlugin;
 use Nimbusoft\Parrot\Plugin\Destination\DestinationPlugin;
 use Nimbusoft\Parrot\Extension\PluginInterface;
-use Nimbusoft\Parrot\Extension\CommandInterface;
+use Nimbusoft\Parrot\Extension\ParrotAwareInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -110,7 +110,7 @@ class Parrot
 
     public function addCommand(Command $command)
     {
-        if ($command instanceof CommandInterface) $command->setParrot($this);
+        if ($command instanceof ParrotAwareInterface) $command->setParrot($this);
 
         return $this->console->add($command);
     }
