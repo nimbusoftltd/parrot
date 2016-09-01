@@ -80,6 +80,10 @@ class Parrot
 
     public function run($file, Command $command = null)
     {
+        if ( ! file_exists($file)) {
+            throw new FileNotFoundException($file);
+        }
+
         $config = Yaml::parse(file_get_contents($file));
 
         mkdir($this->getTempPath());
