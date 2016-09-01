@@ -54,6 +54,11 @@ class Parrot
         return $this->tempPath;
     }
 
+    public function getConsole()
+    {
+        return $this->console;
+    }
+
     public function setConsole(Console $console)
     {
         $this->console = $console;
@@ -74,13 +79,13 @@ class Parrot
         $this->registerPlugin(new PgsqlPlugin);
     }
 
-    public function run($file)
+    public function run($file, Command $command = null)
     {
         $config = Yaml::parse(file_get_contents($file));
 
         mkdir($this->getTempPath());
 
-        $this->emitter->emit(new RunEvent($this, $config));
+        $this->emitter->emit(new RunEvent($this, $config, $command));
     }
 
     public function addCommand(Command $command)
