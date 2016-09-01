@@ -5,13 +5,13 @@ namespace Nimbusoft\Parrot;
 use Symfony\Component\Yaml\Yaml;
 use League\Event\Emitter;
 use League\Event\EmitterInterface;
+use League\Flysystem\FileNotFoundException;
 use Nimbusoft\Parrot\Console;
 use Nimbusoft\Parrot\Event\RunEvent;
-use Nimbusoft\Parrot\Plugin\FilesPlugin;
-use Nimbusoft\Parrot\Plugin\MysqlPlugin;
-use Nimbusoft\Parrot\Plugin\PgsqlPlugin;
-use Nimbusoft\Parrot\Plugin\EncryptionPlugin;
-use Nimbusoft\Parrot\Plugin\DestinationPlugin;
+use Nimbusoft\Parrot\Plugin\File\FilePlugin;
+use Nimbusoft\Parrot\Plugin\Database\DatabasePlugin;
+use Nimbusoft\Parrot\Plugin\Encryption\EncryptionPlugin;
+use Nimbusoft\Parrot\Plugin\Destination\DestinationPlugin;
 use Nimbusoft\Parrot\Extension\PluginInterface;
 use Nimbusoft\Parrot\Extension\CommandInterface;
 use Symfony\Component\Console\Command\Command;
@@ -72,11 +72,10 @@ class Parrot
 
     protected function registerDefaultPlugins()
     {
-        $this->registerPlugin(new DestinationPlugin);
+        $this->registerPlugin(new FilePlugin);
+        $this->registerPlugin(new DatabasePlugin);
         $this->registerPlugin(new EncryptionPlugin);
-        $this->registerPlugin(new FilesPlugin);
-        $this->registerPlugin(new MysqlPlugin);
-        $this->registerPlugin(new PgsqlPlugin);
+        $this->registerPlugin(new DestinationPlugin);
     }
 
     public function run($file, Command $command = null)

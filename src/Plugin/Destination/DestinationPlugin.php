@@ -1,11 +1,12 @@
 <?php
 
-namespace Nimbusoft\Parrot\Plugin;
+namespace Nimbusoft\Parrot\Plugin\Destination;
 
 use RuntimeException;
 use League\Event\EventInterface;
+use Nimbusoft\Parrot\Plugin\File\FilePlugin;
 
-class DestinationPlugin extends FilesPlugin
+class DestinationPlugin extends FilePlugin
 {
     public function register()
     {

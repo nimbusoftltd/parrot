@@ -1,12 +1,12 @@
 <?php
 
-namespace Nimbusoft\Parrot\Plugin;
+namespace Nimbusoft\Parrot\Plugin\Database;
 
 use Nimbusoft\Parrot\Parrot;
 use League\Event\EventInterface;
 use Nimbusoft\Parrot\Extension\AbstractPlugin;
 
-class FilesPlugin extends AbstractPlugin
+class DatabasePlugin extends AbstractPlugin
 {
     public function register()
     {
@@ -15,9 +15,6 @@ class FilesPlugin extends AbstractPlugin
 
     public function run(EventInterface $event)
     {
-        $config = $event->getConfig();
 
-        if ( ! isset($config['files'])) return;
-        if (isset($config['files']['adapter'])) $config['files'] = [$config['files']];
     }
 }

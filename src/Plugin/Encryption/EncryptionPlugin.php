@@ -1,6 +1,6 @@
 <?php
 
-namespace Nimbusoft\Parrot\Plugin;
+namespace Nimbusoft\Parrot\Plugin\Encryption;
 
 use League\Event\EventInterface;
 use Nimbusoft\Parrot\Extension\AbstractPlugin;
