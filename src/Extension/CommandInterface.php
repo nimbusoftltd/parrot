@@ -4,9 +4,7 @@ namespace Nimbusoft\Parrot\Extension;
 
 use Nimbusoft\Parrot\Parrot;
 
-interface CommandInterface
+interface CommandInterface extends ParrotAwareInterface
 {
-    public function setParrot(Parrot $parrot);
-
     public function handle();
 }
