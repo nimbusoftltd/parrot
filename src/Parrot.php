@@ -101,11 +101,14 @@ class Parrot
             $plugin->configure($rootNode);
         }
 
-        $configuration = $processor->process($treeBuilder->buildTree(), $rawConfig);
+        $config = $processor->process($treeBuilder->buildTree(), $rawConfig);
 
         mkdir($this->getTempPath());
 
-        $this->emitter->emit(new RunEvent($this, $config, $command));
+        $runEvent = new RunEvent($command);
+        $runEvent->setConfig($config);
+
+        $this->emitter->emit($runEvent);
     }
 
     public function addCommand(Command $command)

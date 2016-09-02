@@ -3,15 +3,20 @@
 namespace Nimbusoft\Parrot\Event;
 
 use Nimbusoft\Parrot\Parrot;
+use Nimbusoft\Parrot\Extension\ConfigurableInterface;
+use Nimbusoft\Parrot\Extension\ConfigurableTrait;
+use Nimbusoft\Parrot\Extension\ParrotAwareTrait;
+use Nimbusoft\Parrot\Extension\ParrotAwareInterface;
 use League\Event\AbstractEvent;
 use Symfony\Component\Console\Command\Command;
 
-class RunEvent extends AbstractEvent
+class RunEvent extends AbstractEvent implements ConfigurableInterface
 {
-    public function __construct(Parrot $parrot, array $config, Command $command = null)
+    use ConfigurableTrait;
+    use ParrotAwareTrait;
+
+    public function __construct(Command $command = null)
     {
-        $this->parrot = $parrot;
-        $this->config = $config;
         $this->command = $command;
     }
 
