@@ -3,8 +3,9 @@
 namespace Nimbusoft\Parrot\Plugin\Database;
 
 use Nimbusoft\Parrot\Parrot;
-use Nimbusoft\Parrot\Extension\ConfigurableInterface;
+use Nimbusoft\Parrot\Event\RunEvent;
 use Nimbusoft\Parrot\Extension\AbstractPlugin;
+use Nimbusoft\Parrot\Extension\OutputableInterface;
 use Spatie\DbDumper\Databases\MySql;
 use Spatie\DbDumper\Databases\PostgreSql;
 use Spatie\DbDumper\DbDumper;
@@ -70,32 +71,36 @@ class DatabasePlugin extends AbstractPlugin
             ->end();
     }
 
-    public function run(ConfigurableInterface $event)
+    public function run(RunEvent $event)
     {
         $config = $event->getConfig();
 
         if (empty($config['database'])) return;
 
         foreach ($config['database'] as $database) {
+            $event->success("Backing up databases from host: {$database['host']}");
+
             switch ($database['type']) {
                 case 'mysql':
-                    $this->processMysql($database);
+                    $this->processMysql($event, $database);
                 break;
 
                 case 'pgsql':
-                    $this->processPgsql($database);
+                    $this->processPgsql($event, $database);
                 break;
             }
         }
     }
 
-    protected function processMysql(array $config)
+    protected function processMysql(OutputableInterface $output, array $config)
     {
         $dir = $this->parrot->getTempPath().'/database/mysql';
 
         mkdir($dir, 0777, true);
 
         foreach ($config['database'] as $database) {
+            $output->info("Backing up MySQL database: {$database}");
+
             $db = MySql::create()->setDbName($database);
 
             $this->setConfigValues($db, $config);
@@ -104,13 +109,15 @@ class DatabasePlugin extends AbstractPlugin
         }
     }
 
-    protected function processPgsql(array $config)
+    protected function processPgsql(OutputableInterface $output, array $config)
     {
         $dir = $this->parrot->getTempPath().'/database/pgsql';
 
         mkdir($dir, 0777, true);
 
         foreach ($config['database'] as $database) {
+            $output->info("Backing up PostgreSQL database: {$database}");
+
             $db = PostgreSql::create()->setDbName($database);
 
             $this->setConfigValues($db, $config);
