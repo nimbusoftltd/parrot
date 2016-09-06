@@ -9,5 +9,7 @@ interface PluginInterface extends ParrotAwareInterface
 {
     public function register();
 
+    public function getName(): string;
+
     public function configure(ParentNodeDefinitionInterface $config);
 }

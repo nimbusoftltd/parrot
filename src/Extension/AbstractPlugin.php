@@ -9,5 +9,10 @@ abstract class AbstractPlugin implements PluginInterface
 {
     use ParrotAwareTrait;
 
+    public function getName(): string
+    {
+        return get_class($this);
+    }
+
     public function configure(ParentNodeDefinitionInterface $config) {}
 }

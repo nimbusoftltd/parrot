@@ -67,12 +67,17 @@ class Parrot
         $this->console = $console;
     }
 
+    public function getPlugin($plugin): PluginInterface
+    {
+        return $this->plugins[$plugin];
+    }
+
     public function registerPlugin(PluginInterface $plugin)
     {
         $plugin->setParrot($this);
         $plugin->register();
 
-        $this->plugins[] = $plugin;
+        $this->plugins[$plugin->getName()] = $plugin;
     }
 
     protected function registerDefaultPlugins()
