@@ -67,6 +67,11 @@ class Parrot
         $this->console = $console;
     }
 
+    public function getPlugins(): array
+    {
+        return $this->plugins;
+    }
+
     public function getPlugin($plugin): PluginInterface
     {
         return $this->plugins[$plugin];
