@@ -107,6 +107,8 @@ class Parrot
         $treeBuilder = new TreeBuilder;
         $rootNode = $treeBuilder->root('root');
 
+        $this->emitter->emit('pre-config');
+
         foreach ($this->plugins as $plugin) {
             $plugin->configure($rootNode);
         }
