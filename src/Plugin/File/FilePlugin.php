@@ -4,6 +4,9 @@ namespace Nimbusoft\Parrot\Plugin\File;
 
 use Nimbusoft\Parrot\Parrot;
 use League\Event\EventInterface;
+use Nimbusoft\Parrot\Plugin\File\Adapter\S3Adapter;
+use Nimbusoft\Parrot\Plugin\File\Adapter\LocalAdapter;
+use Nimbusoft\Parrot\Plugin\File\Adapter\OpenStackAdapter;
 use Nimbusoft\Parrot\Extension\AbstractPlugin;
 use Symfony\Component\Config\Definition\Builder\ParentNodeDefinitionInterface;
 
@@ -18,12 +21,38 @@ class FilePlugin extends AbstractPlugin implements FilePluginInterface
 
     public function register()
     {
+        $this->parrot->listen('pre-config', [$this, 'preConfig'], Parrot::P_NORMAL);
         $this->parrot->listen('run', [$this, 'run'], Parrot::P_NORMAL);
     }
 
     public function configure(ParentNodeDefinitionInterface $config)
     {
+        $adapters = array_keys($this->adapters);
 
+        $config
+            ->children()
+                ->arrayNode('files')
+                    ->beforeNormalization()
+                        ->ifTrue(function($v) {
+                            return isset($v['adapter']);
+                        })
+                        ->then(function ($v) {
+                            return [$v];
+                        })
+                    ->end()
+                    ->prototype('array')
+                        ->children()
+                            ->enumNode('adapter')
+                                ->isRequired()
+                                ->values($adapters)
+                            ->end()
+                            ->arrayNode('config')
+                                ->isRequired()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
     }
 
     public function adapters(): array
@@ -55,17 +84,17 @@ class FilePlugin extends AbstractPlugin implements FilePluginInterface
         return $this->adapters[$adapter];
     }
 
-    public function run(EventInterface $event)
+    public function preConfig(EventInterface $event)
     {
-        $config = $event->getConfig();
-
         foreach ($this->parrot->getPlugins() as $plugin) {
             if ($plugin instanceof FilePluginInterface) {
                 $this->registerAdapters($plugin->adapters());
             }
         }
+    }
 
-        if ( ! isset($config['files'])) return;
-        if (isset($config['files']['adapter'])) $config['files'] = [$config['files']];
+    public function run(EventInterface $event)
+    {
+
     }
 }
