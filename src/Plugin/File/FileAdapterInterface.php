@@ -1,6 +1,6 @@
 <?php
 
-namespace Nimbusoft\Parrot\Parrot;
+namespace Nimbusoft\Parrot\Plugin\File;
 
 use League\Flysystem\FilesystemInterface;
 
